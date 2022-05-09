@@ -12,6 +12,6 @@ import matplotlib as plt
 import csv
 
 
-santion_data_df = pd.read_csv("/Documents/GitHub/Data-analysis-vehicle-velocity/pafoljd.csv")
+santion_data_df = pd.read_csv("Users/Akseluhr/Documents/GitHub/Data-analysis-vehicle-velocity/pafoljd.csv")
 
 
