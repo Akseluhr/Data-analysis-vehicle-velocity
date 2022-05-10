@@ -33,6 +33,12 @@ def county_speeding_violation(county, camera_data, location_data, sanction_data)
     county_df = location_data_copy.loc[location_data_copy['Kommun'].str.contains(county)]
     merge_camera_location = pd.merge(camera_data_copy, location_data_copy, left_on='MätplatsID', right_on='MätplatsID')
     
+    sum_vehicles_per_road = merge_camera_location.groupby('Kommun')['Vägnummer'].value_counts().reset_index(name='Antal fordon')
+    print(sum_vehicles_per_road)
+    sum_vehicles_per_road_county = sum_vehicles_per_road.where(sum_vehicles_per_road['Kommun'] == county).dropna()
+    sum_vehicles_per_road_county['Antal fordon'] = sum_vehicles_per_road_county['Antal fordon'].astype(int)
+    sum_vehicles_per_road_county.sort_values(by='Vägnummer', inplace=True, ascending=True)
+    print(sum_vehicles_per_road_county)
     county_speeding_analysis_df = pd.DataFrame(columns=['Vägnummer', 'Max hastighet (km/h)', 'Högsta uppmätta hastighet (km/h)', 'Överträdelser (%)', 'Tidpunkt'])
     id_list = county_df['MätplatsID'].tolist()
     county_camera_data = merge_camera_location[merge_camera_location['MätplatsID'].isin(id_list)]
@@ -52,11 +58,15 @@ def county_speeding_violation(county, camera_data, location_data, sanction_data)
 
     max_vel_measured = county_speeding_analysis_df.groupby(['Vägnummer'], sort=False)['Högsta uppmätta hastighet (km/h)'].max()
     county_speeding_analysis_df['Högsta uppmätta hastighet (km/h)'] = max_vel_measured.values
-    
-    county_speeding_analysis_df['Överträdelser (%)'] = sum_speedings_per_road['Hastighet'].tolist() / county_camera_data['Hastighet'].count() * 100
-    county_speeding_analysis_df['Överträdelser (%)'].round(decimals=3)
+    county_speeding_analysis_df.sort_values(by='Vägnummer',inplace=True, ascending=True)
+    l1 = np.array(sum_speedings_per_road['Hastighet'])
+    l2 = np.array(sum_vehicles_per_road_county['Antal fordon'])
+    l3= l1 / l2 * 100
+    county_speeding_analysis_df['Överträdelser (%)'] = l3
+    #county_speeding_analysis_df['Överträdelser (%)'].round(decimals=5)
 
-    print(county_speeding_analysis_df['Högsta uppmätta hastighet (km/h)'])
+
+
    # print(county_speedings.groupby(by='Vägnummer').max())
     ##print('uniq',  len(county_speeding_analysis_df['Vägnummer']))
     #print(max_velocity_per_road_num['Hastighet'].tolist())
