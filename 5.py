@@ -40,7 +40,8 @@ def county_speeding_violation(amera_data, location_data, sanction_data):
     print("här ska d va 303 vid 07.00", all_data_most_traffic)
     all_data_most_traffic['Tid'] = pd.to_datetime(all_data_most_traffic['Tid'])
     print(all_data_most_traffic['Tid'].dt.hour)
-    print(location_data_copy['Kommun'].dtypes)
+    print(all_data_most_traffic['Kommun'].values[0], 'wwww')
+    most_trafficed_county = all_data_most_traffic['Kommun'].values[0]
     bins=[6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
     bin_labels=['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00']
     all_data_most_traffic = pd.cut(all_data_most_traffic['Tid'].dt.hour, bins, labels=bin_labels)
@@ -49,6 +50,9 @@ def county_speeding_violation(amera_data, location_data, sanction_data):
     d = all_data_most_traffic.value_counts(sort=False)
     print(d)
     plt.bar(bin_labels, d)
+    plt.title('Totalt antal fordon som kamerorna registrerar i 2021-09-11')
+    plt.xlabel('Klockslag')
+    plt.ylabel('Antal Fordon')
     return 0
 
 def most_speeding_violations():

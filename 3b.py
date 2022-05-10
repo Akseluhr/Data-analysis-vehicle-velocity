@@ -102,7 +102,5 @@ def county_speeding_violation(county, camera_data, location_data, sanction_data)
 def most_speeding_violations():
     return 0
 
-    
-    
 county = user_input()
 county_speeding_violation(county, camera_data, location_data, sanction_data)
