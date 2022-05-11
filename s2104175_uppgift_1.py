@@ -29,6 +29,5 @@ def camera_data(data):
     print(cameras_per_road.to_string())
     
 
-
 location_data = load_file('platsData.csv')
 camera_data(location_data)
