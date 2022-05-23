@@ -26,6 +26,11 @@ def most_speeding_violation(camera_data, location_data):
     vehicles_captured = merge_camera_location['MätplatsID'].value_counts()
     most_traffic = vehicles_captured.index[0]
     
+    # Get location name with most traffic for plotting
+    measure_location = merge_camera_location.loc[merge_camera_location['MätplatsID'] == most_traffic].reset_index()
+    measure_location_name = measure_location['Namn'][0]
+    measure_location_date = measure_location['Datum'][0] + ' ' + measure_location['Tid'][0]
+    
     # Get all data from this area by filtering on ID for this county
     all_data_most_traffic = merge_camera_location.loc[merge_camera_location['MätplatsID'] == most_traffic]
     print(all_data_most_traffic)
@@ -47,11 +52,13 @@ def most_speeding_violation(camera_data, location_data):
     most_trafic = all_data_most_traffic.value_counts(sort=False)
 
     # Plotting output
+    ax = plt.subplots(figsize=(14,5))
     plt.bar(bin_labels, most_trafic)
-    title = 'Totalt antal fordon som kamerorna registrerar i '+ county + ' på väg: '+ road+'. Datum: 2021-09-11.'
+    title = 'Antal fordon som kamerorna registrerar i ' + measure_location_name + ' - väg '+ road + ' i '+ county + ' kommun under perioden ' + measure_location_date[0:16] + ' - 18:00'
     plt.title(title)
     plt.xlabel('Klockslag')
     plt.ylabel('Antal Fordon')
+    ax.plt()
     
     
 camera_data = load_file('kameraData.csv')

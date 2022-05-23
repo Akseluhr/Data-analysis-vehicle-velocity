@@ -7,6 +7,7 @@ Created on Sat May  7 17:58:15 2022
 """
 import pandas as pd
 import numpy as np
+from tabulate import tabulate
 
 # Function to read and return the csv file
 def load_file(file_name):
@@ -83,8 +84,10 @@ def county_speeding_violation(county, camera_data, location_data):
         county_speeding_analysis_df['Överträdelser (%)'] = speedings_percente
     
         # Print output
-        print(county_speeding_analysis_df.to_string())
-        print("================================================================")
+       # print(county_speeding_analysis_df.to_string())
+        print(tabulate(county_speeding_analysis_df, showindex=False, headers=('Vägnummer','Max hastighet (%)','Upmätt hastighet','Tidpunkt','Påföljd')))
+
+       # print("================================================================")
     else:
         print('Could not find county. Try again.')
 
@@ -156,7 +159,8 @@ def county_speeding_violation_sanctions(county, camera_data, location_data, sanc
         county_speeding_analysis_df['Påföljd'] = sanction_list
     
         # Print output
-        print(county_speeding_analysis_df)
+        print(tabulate(county_speeding_analysis_df, showindex=False, headers=('Vägnummer','Max hastighet (%)','Upmätt hastighet','Tidpunkt','Påföljd')))
+
     else: 
         print('Could not find county. Please try again')
 
